@@ -78,3 +78,146 @@
 //        //gpio.shutdown();
 //    }
 //}
+
+
+//public static void main__(String... args) throws I2CFactory.UnsupportedBusNumberException {
+//        int freq = 60;
+//        if (args.length > 0) {
+//        freq = Integer.parseInt(args[0]);
+//        }
+//        PCA9685 servoBoard = new PCA9685();
+//        servoBoard.setPWMFreq(freq); // Set frequency to 60 Hz by default
+//        int servoMin = 122; // min value for servos like https://www.adafruit.com/product/169 or https://www.adafruit.com/product/155
+//        int servoMax = 615; // max value for servos like https://www.adafruit.com/product/169 or https://www.adafruit.com/product/155
+//
+//final int CONTINUOUS_SERVO_CHANNEL = 0;
+//final int STANDARD_SERVO_CHANNEL   = 1;
+//
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0); // Stop the standard one
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        }));
+//
+//        for (int i = 0; true && i < 5; i++) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMin);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMin);
+//        delay(1_000);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMax);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMax);
+//        delay(1_000);
+//        }
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0);   // Stop the standard one
+//
+//        for (int i = servoMin; i <= servoMax; i++) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, i);
+//        delay(10);
+//        }
+//        for (int i = servoMax; i >= servoMin; i--) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, i);
+//        delay(10);
+//        }
+//
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0);   // Stop the standard one
+//
+//        for (int i = servoMin; i <= servoMax; i++) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, i);
+//        delay(10);
+//        }
+//        for (int i = servoMax; i >= servoMin; i--) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, i);
+//        delay(10);
+//        }
+//
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0);   // Stop the standard one
+//
+//        if (true) {
+//        System.out.println("Now, servoPulse");
+//        servoBoard.setPWMFreq(250);
+//        // The same with setServoPulse
+//        for (int i = 0; i < 5; i++) {
+//        servoBoard.setServoPulse(STANDARD_SERVO_CHANNEL, 1f);
+//        servoBoard.setServoPulse(CONTINUOUS_SERVO_CHANNEL, 1f);
+//        delay(1_000);
+//        servoBoard.setServoPulse(STANDARD_SERVO_CHANNEL, 2f);
+//        servoBoard.setServoPulse(CONTINUOUS_SERVO_CHANNEL, 2f);
+//        delay(1_000);
+//        }
+//        // Stop, Middle
+//        servoBoard.setServoPulse(STANDARD_SERVO_CHANNEL, 1.5f);
+//        servoBoard.setServoPulse(CONTINUOUS_SERVO_CHANNEL, 1.5f);
+//
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        }
+//
+//        System.out.println("Done with the demo.");
+//        }
+
+//public static void main___(String... args) throws I2CFactory.UnsupportedBusNumberException {
+//        int freq = 60;
+//        if (args.length > 0) {
+//        freq = Integer.parseInt(args[0]);
+//        }
+//        PCA9685 servoBoard = new PCA9685();
+//        servoBoard.setPWMFreq(freq); // Set frequency to 60 Hz
+//        int servoMin = getServoMinValue(freq);   // 130;   // was 150. Min pulse length out of 4096
+//        int servoMax = getServoMaxValue(freq);   // was 600. Max pulse length out of 4096
+//
+//final int CONTINUOUS_SERVO_CHANNEL = 0;
+//final int STANDARD_SERVO_CHANNEL = 1;
+//
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0); // Stop the standard one
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        }));
+//
+//        System.out.println(String.format("min: %d, max: %d", servoMin, servoMax));
+//        for (int i = 0; true && i < 5; i++) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMin);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMin);
+//        delay(1_000);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMax);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMax);
+//        delay(1_000);
+//        }
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0);   // Stop the standard one
+//        delay(1_000);
+//
+//        System.out.println("With hard coded values (Suitable for 60 Hz)");
+//        servoMin = 122;
+//        servoMax = 615;
+//        System.out.println(String.format("min: %d, max: %d", servoMin, servoMax));
+//        for (int i = 0; true && i < 5; i++) {
+//        System.out.println("i=" + i);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMin);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMin);
+//        delay(1_000);
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, servoMax);
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, servoMax);
+//        delay(1_000);
+//        }
+//
+//        servoBoard.setPWM(CONTINUOUS_SERVO_CHANNEL, 0, 0); // Stop the continuous one
+//        servoBoard.setPWM(STANDARD_SERVO_CHANNEL, 0, 0);   // Stop the standard one
+//        System.out.println("Ouala");
+//        }
+
+//Servo camServo = new Servo(ActuatorConstants.CAMERA_SERVO_CHANNEL);
+//
+//        camServo.writeAngle(180);
+//        delay(1000);
+//        camServo.turnOff();
+//        camServo.travel(60, 4000);
+//        camServo.travel(125, 4000);
+//        camServo.travel(60, 4000);
+//        camServo.travel(125, 4000);
+//        camServo.turnOff();
