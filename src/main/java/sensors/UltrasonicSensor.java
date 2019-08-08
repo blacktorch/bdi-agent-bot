@@ -21,9 +21,10 @@ public class UltrasonicSensor {
 
     public UltrasonicSensor (int echo, int trigger, long rejectionStart,long rejectionTime) {
 
-        this.pinEcho =echo;
-        this.pinTrigger =trigger;
-        this.rejectionStart =rejectionStart; this.rejectionTime =rejectionTime;
+        this.pinEcho = echo;
+        this.pinTrigger = trigger;
+        this.rejectionStart =rejectionStart;
+        this.rejectionTime =rejectionTime;
 
         gpio = GpioFactory.getInstance();
 

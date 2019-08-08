@@ -44,6 +44,8 @@ public class Servo {
             case ActuatorConstants.BASE_SERVO_CHANNEL:
                 this.minAngle = 0;
                 this.maxAngle = 180;
+                writeAngle(155);
+                delay(500);
                 writeAngle(180);
                 delay(500);
                 this.currentAngle = 180;
@@ -51,20 +53,26 @@ public class Servo {
             case ActuatorConstants.ELBOW_SERVO_CHANNEl:
                 this.minAngle = 0;
                 this.maxAngle = 60;
-                writeAngle(30);
+                writeAngle(50);
                 delay(500);
-                this.currentAngle = 30;
+                writeAngle(10);
+                delay(500);
+                this.currentAngle = 10;
                 break;
             case ActuatorConstants.NECK_SERVO_CHANNEL:
                 this.minAngle = 10;
                 this.maxAngle = 170;
-                writeAngle(80);
+                writeAngle(115);
                 delay(500);
-                this.currentAngle = 80;
+                writeAngle(90);
+                delay(500);
+                this.currentAngle = 90;
                 break;
             case ActuatorConstants.CLAW_SERVO_CHANNEL:
                 this.minAngle = 60;
                 this.maxAngle = 145;
+                writeAngle(120);
+                delay(500);
                 writeAngle(145);
                 delay(500);
                 this.currentAngle = 145;
@@ -72,9 +80,10 @@ public class Servo {
             case ActuatorConstants.CAMERA_SERVO_CHANNEL:
                 this.minAngle = 60;
                 this.maxAngle = 125;
+                writeAngle(100);
+                delay(500);
                 writeAngle(this.maxAngle);
                 delay(500);
-
                 this.currentAngle = this.maxAngle;
                 break;
         }
@@ -106,7 +115,6 @@ public class Servo {
     public boolean travel(int currentAngle, int destinationAngle, int speed){
         destinationAngle = (int) ActuatorUtil.map(destinationAngle);
         currentAngle = (int) ActuatorUtil.map(currentAngle);
-        //System.out.println(destinationAngle);
         if (destinationAngle > currentAngle){
             if (destinationAngle > (int) ActuatorUtil.map(maxAngle)){
                 System.out.println("Destination angle is out of range");
@@ -133,7 +141,6 @@ public class Servo {
             }
 
             int time = (speed/(currentAngle - destinationAngle));
-            System.out.println(time);
 
             for (int i = currentAngle-1 ; i >= destinationAngle; i--){
                 servoDriver.setPWM(channel, 0, i);
