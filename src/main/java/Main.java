@@ -1,18 +1,14 @@
 
-import agent.AgentBot;
+import actions.Move;
+import agent.Brain;
 
 public class Main {
 
     public static void main(String[] args) {
+        Brain brain = new Brain();
+        brain.start();
 
-        try {
-            new Thread(() -> {
-                AgentBot agent = new AgentBot();
-                agent.run();
-            }).start();
-        } catch (Exception e){
-            System.out.println("Encountered problem running agent reasoning!");
-        }
+        //Move.stopEngine();
 
     }
 }

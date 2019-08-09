@@ -21,9 +21,9 @@ public final class Move {
 
     public static void turnLeft(float radius, int speed){
         if (!leftMotor.isStarted()){
-            leftMotor.start((int)((radius/2) * speed), ActuatorConstants.LEFT_MOTOR_BACKWARD_DIRECTION);
+            leftMotor.start((int)((radius) * speed), ActuatorConstants.LEFT_MOTOR_BACKWARD_DIRECTION);
         } else {
-            leftMotor.setSpeed((int)((radius/2) * speed));
+            leftMotor.setSpeed((int)((radius) * speed));
             leftMotor.setDirection(ActuatorConstants.LEFT_MOTOR_BACKWARD_DIRECTION);
         }
         if (!rightMotor.isStarted()){
@@ -36,9 +36,9 @@ public final class Move {
 
     public static void turnRight(float radius, int speed){
         if (!rightMotor.isStarted()){
-            rightMotor.start((int)((radius/2) * speed), ActuatorConstants.RIGHT_MOTOR_BACKWARD_DIRECTION);
+            rightMotor.start((int)((radius) * speed), ActuatorConstants.RIGHT_MOTOR_BACKWARD_DIRECTION);
         } else {
-            rightMotor.setSpeed((int)((radius/2) * speed));
+            rightMotor.setSpeed((int)((radius) * speed));
             rightMotor.setDirection(ActuatorConstants.RIGHT_MOTOR_BACKWARD_DIRECTION);
         }
         if (!leftMotor.isStarted()){
@@ -59,8 +59,13 @@ public final class Move {
         }
     }
 
-    public static void stop(){
+    public static void stopEngine(){
         leftMotor.stop();
         rightMotor.stop();
+    }
+
+    public static void startEngine(){
+        leftMotor.start(0, ActuatorConstants.LEFT_MOTOR_FORWARD_DIRECTION);
+        rightMotor.start(0, ActuatorConstants.RIGHT_MOTOR_FORWARD_DIRECTION);
     }
 }

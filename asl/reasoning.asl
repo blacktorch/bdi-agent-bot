@@ -1,6 +1,12 @@
 
-+x(N) : N < 3
-   <- do(0); .print(end2).
++middle : true
+   <- go_forward.
 
-+x(N) : N >= 3
-   <- do(50); .print(end1).
++left : true
+   <- turn_left.
+
++right : true
+   <- turn_right.
+
++lost : true
+   <- turn_left.

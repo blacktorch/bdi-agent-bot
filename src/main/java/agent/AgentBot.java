@@ -1,5 +1,6 @@
 package agent;
 
+import enums.Action;
 import jason.architecture.AgArch;
 import jason.asSemantics.ActionExec;
 import jason.asSemantics.Agent;
@@ -13,8 +14,10 @@ import java.util.logging.Logger;
 
 public class AgentBot extends AgArch {
     private static Logger logger = Logger.getLogger(AgentBot.class.getName());
+    private Brain brain;
 
-    public AgentBot(){
+    public AgentBot(Brain brain){
+        this.brain = brain;
         try {
             Agent ag = new Agent();
             new TransitionSystem(ag, null, null, this);
@@ -39,14 +42,14 @@ public class AgentBot extends AgArch {
     }
 
     public String getAgName() {
-        return "bob";
+        return "Robot";
     }
 
     // this method just add some perception for the agent
     @Override
     public List<Literal> perceive() {
-        List<Literal> l = new ArrayList<>();
-        l.add(Literal.parseLiteral("x(10)"));
+        List<Literal> l = new ArrayList<>(brain.getPerceptions());
+        //l.add(Literal.parseLiteral("x(10)"));
         return l;
     }
 
@@ -55,6 +58,7 @@ public class AgentBot extends AgArch {
     public void act(ActionExec action) {
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm());
         // set that the execution was ok
+        brain.updateAction(Action.valueOf(action.getActionTerm().toString().toUpperCase()));
         action.setResult(true);
         actionExecuted(action);
     }
@@ -72,7 +76,7 @@ public class AgentBot extends AgArch {
     // a very simple implementation of sleep
     public void sleep() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {}
     }
 
