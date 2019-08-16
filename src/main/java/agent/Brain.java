@@ -20,7 +20,7 @@ public class Brain extends Thread {
     public Brain(){
         perceptions = new ArrayList<>();
         action = Action.STOP;
-        lineSensor = new LineSensor();
+        //lineSensor = new LineSensor();
         isNewAction = true;
     }
 
