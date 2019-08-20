@@ -1,15 +1,17 @@
 package connectivity;
 
-import java.io.BufferedReader;
+import interfaces.IMessageReceivedListener;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Observable;
 
-public class RobotServer {
+public class RobotServer extends Observable implements IMessageReceivedListener {
+
     ServerSocket serverSocket;
     private String host;
     private int port;
@@ -25,8 +27,11 @@ public class RobotServer {
     public void start(){
         try {
             serverSocket = new ServerSocket(port, 50, address);
+            ClientHandler clientHandler;
             while (true){
-                new ClientHandler(serverSocket.accept()).start();
+               clientHandler = new ClientHandler(serverSocket.accept());
+               clientHandler.setMessageReceivedListener(this);
+               clientHandler.start();
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -34,41 +39,55 @@ public class RobotServer {
 
     }
 
+    @Override
+    public void onReceiveMessage(Message message) {
+        setChanged();
+        notifyObservers(message);
+    }
+
     private static class ClientHandler extends Thread{
         private Socket clientSocket;
-        private PrintWriter out;
+        private OutputStream out;
         private byte[] in;
 
-        public ClientHandler(Socket socket){
+        private IMessageReceivedListener messageReceivedListener;
+
+        ClientHandler(Socket socket){
             this.clientSocket = socket;
             in = new byte[1024];
+        }
+
+        public void setMessageReceivedListener(IMessageReceivedListener listener){
+            this.messageReceivedListener = listener;
         }
 
         public void run() {
 
             try {
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
+                out = clientSocket.getOutputStream();
 
                 String inputLine;
                 while (true) {
-                    clientSocket.getInputStream().read(in, 0, 1024);
-                    inputLine = new String(in);
-                    System.out.println(inputLine.trim());
-                    if (".".equals(inputLine.trim())) {
-                        out.println("bye");
+                    if (!clientSocket.isConnected()){
+                        out.close();
+                        clientSocket.close();
                         break;
                     }
-                    out.println(inputLine.trim());
+                    if (clientSocket.getInputStream().available() > 0){
+                        clientSocket.getInputStream().read(in, 0, 1024);
+                        inputLine = new String(in);
+                        System.out.println(inputLine.trim());
+                        messageReceivedListener.onReceiveMessage(new Message(inputLine.trim(), out));
+                    }
 
                 }
 
-                out.close();
-                clientSocket.close();
             } catch (IOException e){
                 e.printStackTrace();
             }
         }
     }
+
 
 
 }
