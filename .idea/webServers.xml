@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="287ef7f8-4f85-4c38-ab0d-6341aa07025b" name="BDIServer" url="http://192.168.1.99">
-        <fileTransfer host="192.168.1.99" port="22" rootFolder="/home/pi/Documents/bdi" accessType="SFTP">
+      <webServer id="287ef7f8-4f85-4c38-ab0d-6341aa07025b" name="BDIServer" url="http://192.168.1.80">
+        <fileTransfer host="192.168.1.80" port="22" rootFolder="/home/pi/Documents/bdi" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

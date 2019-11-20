@@ -35,8 +35,8 @@ public class UltrasonicSensor {
 
     }
 
-    public int getDistance() throws Exception {
-        int distance;
+    public double getDistance() throws Exception {
+        double distance;
         long startTime, endTime, rejection_start = 0, rejection_time = 0;
 
         /**Start ranging- trig should be in high state for 10us to generate ultrasonic signal
@@ -65,7 +65,7 @@ public class UltrasonicSensor {
         }
         endTime=System.nanoTime();
 
-        distance=(int)((endTime-startTime)/5882.35294118); //distance in mm
+        distance= ((endTime-startTime)/5882.35294118)/10; //distance in cm
 
         return distance;
     }
