@@ -70,4 +70,14 @@ public final class ActuatorUtil {
 
         return mappedValue;
     }
+
+    public static double valueMap(int value, int min, int max, int desiredMin, int desiredMax){
+
+        double mappedValue = 0.0;
+
+        mappedValue = (value - min)*((desiredMax - desiredMin)/(max - min)) + desiredMin;
+
+        return mappedValue;
+
+    }
 }

@@ -9,9 +9,9 @@ import RPi.GPIO as GPIO
 # motor_A:  Pin8,Pin10    |  motor_B: Pin13,Pin12
 
 Motor_A_EN    = 7
-Motor_B_EN    = 11
+Motor_B_EN    = 8
 
-Motor_A_Pin1  = 8
+Motor_A_Pin1  = 11
 Motor_A_Pin2  = 10
 Motor_B_Pin1  = 13
 Motor_B_Pin2  = 12

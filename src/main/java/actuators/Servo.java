@@ -59,23 +59,13 @@ public class Servo {
                 delay(500);
                 this.currentAngle = 10;
                 break;
-            case ActuatorConstants.NECK_SERVO_CHANNEL:
+            case ActuatorConstants.PAN_SERVO_CHANNEL:
                 this.minAngle = 10;
                 this.maxAngle = 170;
-                writeAngle(115);
-                delay(500);
-                writeAngle(90);
-                delay(500);
-                this.currentAngle = 90;
                 break;
-            case ActuatorConstants.CLAW_SERVO_CHANNEL:
-                this.minAngle = 60;
+            case ActuatorConstants.TILT_SERVO_CHANNEL:
+                this.minAngle = 40;
                 this.maxAngle = 145;
-                writeAngle(120);
-                delay(500);
-                writeAngle(145);
-                delay(500);
-                this.currentAngle = 145;
                 break;
             case ActuatorConstants.CAMERA_SERVO_CHANNEL:
                 this.minAngle = 60;
@@ -85,6 +75,10 @@ public class Servo {
                 writeAngle(this.maxAngle);
                 delay(500);
                 this.currentAngle = this.maxAngle;
+                break;
+            case ActuatorConstants.STEER_SERVO_CHANNEL:
+                this.minAngle = 65;
+                this.maxAngle = 130;
                 break;
         }
 

@@ -17,23 +17,37 @@ import static utils.TimeUtil.delay;
 
 public class Main implements Observer {
 
-     //static Servo camServo = new Servo(ActuatorConstants.CAMERA_SERVO_CHANNEL);
-    UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(SensorConstants.ULTRASONIC_ECHO_PIN,
-            SensorConstants.ULTRASONIC_TRIGGER_PIN, SensorConstants.REJECTION_START,
-            SensorConstants.REJECTION_TIME);
-    static Servo base = new Servo(ActuatorConstants.BASE_SERVO_CHANNEL);
-    static Servo elbow = new Servo(ActuatorConstants.ELBOW_SERVO_CHANNEl);
-    static Servo cam = new Servo(ActuatorConstants.CAMERA_SERVO_CHANNEL);
 
-
+    //static Servo tire = new Servo(ActuatorConstants.TILT_SERVO_CHANNEL);
     public static void main(String[] args) throws  IOException {
-       // elbow.writeAngle(40);
-        Move.stopEngine();
-//        for (;;){
-//            armDance();
+
+//        //tire.travel(120, 1000);
+//        Move.startEngine();
+//        Move.forward(50);
+//        delay(2000);
+//        Move.stopEngine();
+
+//        sensors.UltrasonicSensor sonic =new sensors.UltrasonicSensor(
+//                5,//ECO PIN (physical 16)
+//                4,//TRIG PIN (physical 18)
+//                1000,//REJECTION_START ; long (nano seconds)
+//                23529411 //REJECTION_TIME ; long (nano seconds)
+//        );
+//        System.out.println("Start");
+//        while(true){
+//            try {
+//                System.out.println("distance "+ sonic.getDistance()+"mm");
+//                Thread.sleep(100); //1s
+//            } catch (Exception ex){
+//                ex.printStackTrace();
+//            }
+//
 //        }
-//        base.turnOff();
-//        elbow.turnOff();
+//
+
+
+        //tire.writeAngle(140);
+
 
     }
 
@@ -44,22 +58,6 @@ public class Main implements Observer {
         } catch (IOException e){
             e.printStackTrace();
         }
-    }
-
-    private static void armDance(){
-        delay(120);
-        cam.writeAngle(65);
-        Move.turnRight(0.5f, 50);
-        base.travel(145, 600);
-        elbow.travel(50,600);
-        Move.turnLeft(0.5f, 50);
-        cam.writeAngle(120);
-        elbow.travel(10, 400);
-        base.travel(180, 400);
-        //elbow.writeAngle(30);
-        //delay(1000);
-        //base.writeAngle(180);
-        //elbow.writeAngle(10);
     }
 
     @Override
@@ -98,12 +96,7 @@ public class Main implements Observer {
                     break;
                 case "detect":
                     if (data[1].equals("distance")){
-                        try {
-                            System.out.println(ultrasonicSensor.getDistance());
-                            reply(String.valueOf(ultrasonicSensor.getDistance()), message);
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
+
 
                     }
             }
