@@ -1,0 +1,36 @@
+module MissionData {
+
+  #pragma DCPS_DATA_TYPE "MissionData::MissionPlan"
+  #pragma DCPS_DATA_KEY "MissionData::MissionPlan planId"
+
+  typedef sequence<string> PlanData;
+
+  struct MissionPlan {
+    string from;
+    long planId;
+    PlanData plan_data;
+  };
+
+  #pragma DCPS_DATA_TYPE "MissionData::AgentAction"
+  #pragma DCPS_DATA_KEY "MissionData::AgentAction actionId"
+
+  typedef sequence<string> ActionData;
+
+  struct AgentAction {
+    string from;
+    long actionId;
+    ActionData action_data;
+  };
+
+  #pragma DCPS_DATA_TYPE "MissionData::Telemetry"
+  #pragma DCPS_DATA_KEY "MissionData::Telemetry telemetryId"
+
+  typedef sequence<string> TelemetryData;
+
+  struct Telemetry {
+    string from;
+    long telemetryId;
+    TelemetryData telemetry_data;
+  };
+
+};

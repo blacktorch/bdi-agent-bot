@@ -7,34 +7,34 @@ import constants.SensorConstants;
 
 public class Odometry   {
 
-    private int pulsePerRev;
-    private float circumference;
     private static double DIST_PER_PULSE = 0.11989583;
 
     private double distanceMoved;
 
-    GpioPin leftInputA;
-    GpioPin rightInputB;
+    private GpioPin leftInputA;
+    private GpioPin rightInputB;
 
     private int pulseA;
     private int pulseB;
 
-    GpioController gpio;
+    private GpioController gpio;
+    private static Odometry odometry;
 
-    public Odometry(int pulsePerRev){
+    private Odometry(){
 
         gpio =  GpioFactory.getInstance();
         leftInputA = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_A, "PinA", PinPullResistance.PULL_UP);
         rightInputB = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_B, "PinB", PinPullResistance.PULL_UP);
 
-        this.pulsePerRev = pulsePerRev;
         this.distanceMoved = 0.0f;
         pulseA = 0;
         pulseB = 0;
 
+        setup();
+
     }
 
-    public void setup(){
+    private void setup(){
 
         try {
             leftInputA.addListener(new GpioPinListenerDigital() {
@@ -48,7 +48,7 @@ public class Odometry   {
                         ++pulseA;
 
                         distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
-                        System.out.println(distanceMoved);
+                        //System.out.println(distanceMoved);
 
                     }
 
@@ -73,6 +73,15 @@ public class Odometry   {
             e.printStackTrace();
         }
 
+    }
+
+    public static Odometry getInstance(){
+        if (odometry == null){
+            odometry = new Odometry();
+            return odometry;
+        } else {
+            return odometry;
+        }
     }
 
     public void reset(){

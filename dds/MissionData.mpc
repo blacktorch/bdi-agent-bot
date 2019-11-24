@@ -1,0 +1,19 @@
+project: dcps_java {
+
+    idlflags += -Wb,stub_export_include=MissionData_Export.h \
+    -Wb,stub_export_macro=MissionData_Export
+    dcps_ts_flags += -Wb,export_macro=MissionData_Export
+    idl2jniflags += -Wb,stub_export_include=MissionData_Export.h \
+    -Wb,stub_export_macro=MissionData_Export
+    dynamicflags += MISSION_DATA_BUILD_DLL
+
+    specific {
+        jarname = DDS_MissionData_types
+    }
+
+    TypeSupport_Files {
+        MissionData.idl
+    }
+
+    libout = $(PROJECT_ROOT)/lib
+}
