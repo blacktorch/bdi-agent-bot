@@ -15,4 +15,8 @@ public final class SensorConstants {
     public static final Pin LEFT_LDR = RaspiPin.GPIO_24;
     public static final Pin MIDDLE_LDR = RaspiPin.GPIO_27;
     public static final Pin RIGHT_LDR = RaspiPin.GPIO_28;
+    public static final Pin ODO_LEFT_A = RaspiPin.GPIO_21;
+    public static final Pin ODO_LEFT_B = RaspiPin.GPIO_22;
+    public static final Pin ODO_RIGHT_A = RaspiPin.GPIO_26;
+    public static final Pin ODO_RIGHT_B = RaspiPin.GPIO_27;
 }
