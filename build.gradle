@@ -8,6 +8,7 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -16,10 +17,17 @@ dependencies {
     compile fileTree(dir: 'lib', include: 'jrpicam-1.1.1.jar')
     compile fileTree(dir: 'lib', include: 'jdom.jar')
     compile fileTree(dir: 'lib', include: 'jviolajones2.0.jar')
+    compile fileTree(dir: 'lib', include: 'DDS_MissionData_types.jar')
+    compile fileTree(dir: 'lib', include: 'OpenDDS_DCPS.jar')
+    compile fileTree(dir: 'lib', include: 'i2jrt.jar')
+    compile fileTree(dir: 'lib', include: 'tao_java.jar')
     compile 'com.pi4j:pi4j-core:1.2'
     compile 'com.pi4j:pi4j-gpio-extension:1.2'
     compile 'com.pi4j:pi4j-device:1.2'
     compile 'net.sf.jason:jason:2.3'
+    //compile 'com.opendds:opendds:3.13.3'
+    //compile 'com.opendds:i2jrt:3.13.3'
+    //compile 'com.opendds:tao:3.13.3'
 }
 
 apply plugin: 'application'

@@ -88,7 +88,7 @@ public class LeftMotor implements IMotor {
         motorDriver.setPWM(4,0, 0);
         motorPinA.setState(PinState.LOW);
         motorPinB.setState(PinState.LOW);
-        gpio.shutdown();
+        //gpio.shutdown();
         this.started = false;
     }
 }

@@ -86,7 +86,7 @@ public class RightMotor implements IMotor{
         motorDriver.setPWM(5,0, 0);
         motorPinA.setState(PinState.LOW);
         motorPinB.setState(PinState.LOW);
-        gpio.shutdown();
+        //gpio.shutdown();
         this.started = false;
     }
 }

@@ -77,7 +77,7 @@ public class Servo {
                 this.currentAngle = this.maxAngle;
                 break;
             case ActuatorConstants.STEER_SERVO_CHANNEL:
-                this.minAngle = 65;
+                this.minAngle = 70;
                 this.maxAngle = 130;
                 break;
         }

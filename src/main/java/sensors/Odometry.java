@@ -64,10 +64,14 @@ public class Odometry   {
                     if (arg0.getState().getValue() != lastB){
                         lastB = arg0.getState().getValue();
                         ++pulseB;
+                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+                        //System.out.println(distanceMoved);
                     }
 
                 }
             });
+
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -91,6 +95,7 @@ public class Odometry   {
     }
 
     public double getDistanceMoved(){
+        //System.out.println("Hello!");
         return distanceMoved;
     }
 
