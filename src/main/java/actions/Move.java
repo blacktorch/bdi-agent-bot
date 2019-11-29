@@ -5,7 +5,6 @@ import actuators.RightMotor;
 import actuators.Servo;
 import com.pi4j.wiringpi.Gpio;
 import constants.ActuatorConstants;
-import interfaces.IMoveCompletedListener;
 import utils.ActuatorUtil;
 
 public final class Move {
@@ -14,22 +13,26 @@ public final class Move {
     private static boolean isMoving = false;
     private static int currentAngle = 0;
 
-//    private static IMoveCompletedListener moveCompletedListener;
+//    private static IOdometryListener moveCompletedListener;
 
     public static void forward(int speed){
-        leftMotor.start(speed, ActuatorConstants.LEFT_MOTOR_FORWARD_DIRECTION);
-        rightMotor.start(speed, ActuatorConstants.RIGHT_MOTOR_FORWARD_DIRECTION);
-        isMoving = true;
+        if (!isMoving){
+            leftMotor.start(speed, ActuatorConstants.LEFT_MOTOR_FORWARD_DIRECTION);
+            rightMotor.start(speed, ActuatorConstants.RIGHT_MOTOR_FORWARD_DIRECTION);
+            isMoving = true;
+        }
     }
 
-//    public static void setMoveCompletedListener(IMoveCompletedListener iMoveCompletedListener){
+//    public static void setMoveCompletedListener(IOdometryListener iMoveCompletedListener){
 //        moveCompletedListener=iMoveCompletedListener;
 //    }
 
     public static void backward(int speed){
-        leftMotor.start(speed, ActuatorConstants.LEFT_MOTOR_BACKWARD_DIRECTION);
-        rightMotor.start(speed, ActuatorConstants.RIGHT_MOTOR_BACKWARD_DIRECTION);
-        isMoving = true;
+        if (!isMoving){
+            leftMotor.start(speed, ActuatorConstants.LEFT_MOTOR_BACKWARD_DIRECTION);
+            rightMotor.start(speed, ActuatorConstants.RIGHT_MOTOR_BACKWARD_DIRECTION);
+            isMoving = true;
+        }
     }
 
     public static void steer(int angle){
@@ -82,6 +85,7 @@ public final class Move {
             System.out.println(i);
             Gpio.delay(breakDelay);
         }
+        isMoving = false;
     }
 
     public static void stopEngine(){

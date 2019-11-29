@@ -284,3 +284,165 @@
 //            }
 //
 //        }
+
+
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import constants.SensorConstants;
+
+public class Odometry   {
+
+    private static double DIST_PER_PULSE = 0.11989583;
+
+    private double distanceMoved;
+
+    private GpioPin leftInputA;
+    private GpioPin rightInputB;
+
+    private int stateCountA = 1;
+    private int stateCountB = 1;
+    private int lastStateA;
+    private int currentStateA;
+
+    private int lastStateB;
+    private int currentStateB;
+
+    private int pulseA;
+    private int pulseB;
+
+    private GpioController gpio;
+    private static Odometry odometry;
+
+    private Odometry(){
+
+        gpio =  GpioFactory.getInstance();
+        leftInputA = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_A, "PinA", PinPullResistance.PULL_UP);
+        rightInputB = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_B, "PinB", PinPullResistance.PULL_UP);
+
+        this.distanceMoved = 0.0f;
+        pulseA = 0;
+        pulseB = 0;
+
+        setup();
+
+    }
+
+    private void setup(){
+
+        try {
+            leftInputA.addListener(new GpioPinListenerDigital() {
+
+                @Override
+                public synchronized void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent arg0) {
+//                    if (stateCountA == 1){
+//                        currentStateA = arg0.getState().getValue();
+//                        stateCountA++;
+//                    } else if (stateCountA == 2){
+//                        lastStateA = currentStateA;
+//                        currentStateA = arg0.getState().getValue();
+//                        stateCountA++;
+//                    } else if (stateCountA == 3 && lastStateA == arg0.getState().getValue()){
+//                        stateCountA = 1;
+//                        ++pulseA;
+//
+//                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+//                        //System.out.println(distanceMoved);
+//                    }
+                    ++pulseA;
+                    //distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+                    distanceMoved = ((double)pulseA) * (230.2/1920);
+                    //System.out.println(pulseA);
+
+
+
+
+
+
+//                    if (arg0.getState().getValue() != lastA){
+//                        lastA = arg0.getState().getValue();
+//                        ++pulseA;
+//
+//                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+//                        System.out.println(distanceMoved);
+//
+//                    }
+
+                }
+            });
+
+            rightInputB.addListener(new GpioPinListenerDigital() {
+                int lastB;
+
+                @Override
+                public synchronized void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent arg0) {
+
+//                    if (stateCountB == 1){
+//                        currentStateB = arg0.getState().getValue();
+//                        stateCountB++;
+//                    } else if (stateCountB == 2){
+//                        lastStateB = currentStateB;
+//                        currentStateB = arg0.getState().getValue();
+//                        stateCountB++;
+//                    } else if (stateCountB == 3 && lastStateB == arg0.getState().getValue()){
+//                        stateCountB = 1;
+//                        ++pulseB;
+//
+//                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+//                        System.out.println(pulseB);
+//                    }
+
+                    //++pulseB;
+
+                    //distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+                    //System.out.println(pulseB);
+
+//                    if (arg0.getState().getValue() != lastB){
+//                        lastB = arg0.getState().getValue();
+//                        ++pulseB;
+//                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
+//                        //System.out.println(distanceMoved);
+//                    }
+
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Odometry getInstance(){
+        if (odometry == null){
+            odometry = new Odometry();
+            return odometry;
+        } else {
+            return odometry;
+        }
+    }
+
+    public void reset(){
+        this.distanceMoved = 0.0f;
+        pulseA = 0;
+        pulseB = 0;
+        stateCountA = 1;
+        stateCountB = 1;
+        lastStateA = 0;
+        lastStateB = 0;
+        currentStateA = 0;
+        currentStateB = 0;
+    }
+
+    public double getDistanceMoved(){
+        //System.out.println("Hello!");
+        return distanceMoved;
+    }
+
+    public int getPulseA(){
+        return pulseA;
+    }
+
+}

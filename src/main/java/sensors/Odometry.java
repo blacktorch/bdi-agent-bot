@@ -1,8 +1,11 @@
 package sensors;
 
+import actions.Move;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import com.pi4j.wiringpi.Gpio;
+import com.pi4j.wiringpi.GpioInterruptCallback;
 import constants.SensorConstants;
 
 public class Odometry   {
@@ -23,8 +26,6 @@ public class Odometry   {
     private Odometry(){
 
         gpio =  GpioFactory.getInstance();
-        leftInputA = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_A, "PinA", PinPullResistance.PULL_UP);
-        rightInputB = gpio.provisionDigitalInputPin(SensorConstants.ODO_LEFT_B, "PinB", PinPullResistance.PULL_UP);
 
         this.distanceMoved = 0.0f;
         pulseA = 0;
@@ -34,43 +35,37 @@ public class Odometry   {
 
     }
 
-    private void setup(){
+    private synchronized void setup(){
+
+        if (Gpio.wiringPiSetup() == -1){
+            System.out.println("GPIO Setup Failed!");
+            return;
+        }
+
+        Gpio.pinMode(21, Gpio.INPUT);
+        Gpio.pinMode(27, Gpio.INPUT);
+
+        Gpio.pullUpDnControl(21, Gpio.PUD_UP);
+        Gpio.pullUpDnControl(27, Gpio.PUD_UP);
 
         try {
-            leftInputA.addListener(new GpioPinListenerDigital() {
-                int lastA;
 
+            Gpio.wiringPiISR(21, Gpio.INT_EDGE_BOTH, new GpioInterruptCallback() {
                 @Override
-                public synchronized void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent arg0) {
-
-                    if (arg0.getState().getValue() != lastA){
-                        lastA = arg0.getState().getValue();
-                        ++pulseA;
-
-                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
-                        //System.out.println(distanceMoved);
-
-                    }
-
+                public void callback(int i) {
+                    ++pulseA;
+                    distanceMoved = (((double)pulseA + (double)pulseB)/2) * (230.2/1000);
+                    //System.out.println(pulseA);
                 }
             });
 
-            rightInputB.addListener(new GpioPinListenerDigital() {
-                int lastB;
-
+            Gpio.wiringPiISR(27, Gpio.INT_EDGE_BOTH, new GpioInterruptCallback() {
                 @Override
-                public synchronized void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent arg0) {
-
-                    if (arg0.getState().getValue() != lastB){
-                        lastB = arg0.getState().getValue();
-                        ++pulseB;
-                        distanceMoved = (((double) pulseA + (double) pulseB)/2) * DIST_PER_PULSE;
-                        //System.out.println(distanceMoved);
-                    }
-
+                public void callback(int i) {
+                    ++pulseB;
+                    distanceMoved = (((double)pulseA + (double)pulseB)/2) * (230.2/1000);
                 }
             });
-
 
         }
         catch (Exception e){
@@ -79,7 +74,7 @@ public class Odometry   {
 
     }
 
-    public static Odometry getInstance(){
+    public synchronized static Odometry getInstance(){
         if (odometry == null){
             odometry = new Odometry();
             return odometry;
@@ -88,15 +83,19 @@ public class Odometry   {
         }
     }
 
-    public void reset(){
+    public synchronized void reset(){
         this.distanceMoved = 0.0f;
         pulseA = 0;
         pulseB = 0;
     }
 
-    public double getDistanceMoved(){
+    public synchronized double getDistanceMoved(){
         //System.out.println("Hello!");
         return distanceMoved;
+    }
+
+    public synchronized int getPulseA(){
+        return pulseA;
     }
 
 }
