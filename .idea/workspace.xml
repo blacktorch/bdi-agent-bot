@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ff845745-71c3-4e73-983c-c1c859da9634" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="ff845745-71c3-4e73-983c-c1c859da9634" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -45,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1436">
-              <caret line="26" column="44" lean-forward="true" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
+              <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -69,7 +66,7 @@
         <entry file="file://$PROJECT_DIR$/config.ini">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="9" column="35" lean-forward="true" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+              <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -78,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/connectivity/DataReaderListenerImpl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-106">
-              <caret line="93" column="5" lean-forward="true" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
+              <caret line="93" column="5" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4052#4053#0" expanded="true" />
@@ -106,7 +103,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/connectivity/Subscribe.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="293">
-              <caret line="348" lean-forward="true" selection-start-line="348" selection-end-line="348" />
+              <caret line="348" selection-start-line="348" selection-end-line="348" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#13987#13988#0" expanded="true" />
@@ -437,7 +434,7 @@
       <workItem from="1572231862960" duration="3893000" />
       <workItem from="1574277529555" duration="2316000" />
       <workItem from="1574433205785" duration="70828000" />
-      <workItem from="1574878651188" duration="35181000" />
+      <workItem from="1574878651188" duration="35617000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1564728433531</created>
@@ -530,15 +527,21 @@
       <option name="project" value="LOCAL" />
       <updated>1575098857707</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Odometry Calibration">
+      <created>1575166992869</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1575166992869</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="277379000" />
+    <option name="totallyTimeSpent" value="277815000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2008547" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -999,14 +1002,14 @@
     <entry file="file://$PROJECT_DIR$/config.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="35" lean-forward="true" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/connectivity/DataReaderListenerImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-106">
-          <caret line="93" column="5" lean-forward="true" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
+          <caret line="93" column="5" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4052#4053#0" expanded="true" />
@@ -1018,7 +1021,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/connectivity/Subscribe.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
-          <caret line="348" lean-forward="true" selection-start-line="348" selection-end-line="348" />
+          <caret line="348" selection-start-line="348" selection-end-line="348" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#13987#13988#0" expanded="true" />
@@ -1034,7 +1037,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1436">
-          <caret line="26" column="44" lean-forward="true" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
+          <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
