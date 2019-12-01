@@ -31,6 +31,7 @@ public class Main {
         delay(100);
         Pole pole = Pole.EAST;
 
+
         Subscribe subscriber = new Subscribe();
         //subscriber.start(args);
 
