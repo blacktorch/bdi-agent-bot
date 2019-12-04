@@ -26,11 +26,13 @@ module MissionData {
   #pragma DCPS_DATA_KEY "MissionData::Telemetry telemetryId"
 
   typedef sequence<string> TelemetryData;
+  typedef sequence<octet> ImageData;
 
   struct Telemetry {
     string from;
     long telemetryId;
     TelemetryData telemetry_data;
+    ImageData image;
   };
 
 };

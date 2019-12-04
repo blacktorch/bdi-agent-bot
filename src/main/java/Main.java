@@ -1,18 +1,13 @@
-
 import actions.Move;
 
 import actuators.Servo;
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import com.pi4j.wiringpi.Gpio;
+import connectivity.GobalVariable;
 import connectivity.Subscribe;
 import constants.ActuatorConstants;
-import constants.SensorConstants;
 import enums.Pole;
 import environment.Point;
-import interfaces.IOdometryListener;
 import sensors.Odometry;
+import java.io.IOException;
 
 import static com.pi4j.wiringpi.Gpio.delay;
 
@@ -24,7 +19,25 @@ public class Main {
     private static final double SINGLE_CELL_SPACE = 230.2;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+//        Webcam webcam = Webcam.getDefault();
+//        if (webcam != null) {
+//            System.out.println("Webcam: " + webcam.getName());
+//            webcam.setViewSize(new Dimension(320,240));
+//            webcam.open();
+//            try {
+//                System.out.println(webcam.getViewSize().height);
+//                ImageIO.write(webcam.getImage(), "PNG", new File("hello-world.png"));
+//            }
+//            catch (IOException e){
+//                e.printStackTrace();
+//            }
+//
+//        } else {
+//            System.out.println("No webcam detected");
+//        }
+        GobalVariable.args = args;
 
         Servo wheel = new Servo(ActuatorConstants.STEER_SERVO_CHANNEL);
         wheel.writeAngle(100);
@@ -33,7 +46,6 @@ public class Main {
 
 
         Subscribe subscriber = new Subscribe();
-        //subscriber.start(args);
 
         new Thread(() -> {
             try{
@@ -51,7 +63,7 @@ public class Main {
 
         while (true){
             if (!subscriber.isNewDataReceived()){
-                System.out.print(".");
+                //System.out.print(".");
             } else {
                 Point[] points = new Point[subscriber.getPoints().size()];
                 for (int i = 0; i < points.length; i++){

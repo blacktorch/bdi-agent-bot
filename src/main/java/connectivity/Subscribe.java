@@ -353,5 +353,24 @@ public class Subscribe implements ISubscribedDataReceivedListener{
         System.out.println(points.get(1).getX());
         newDataReceived = true;
 
+        new Thread(() -> {
+            try{
+                Publish publish = new Publish.Builder().setDataType("AgentAction")
+                        .setDomainID(10)
+                        .setTopicString("Points")
+                        .build();
+                publish.setUp(GobalVariable.args);
+                System.out.println("Pub started");
+                //String[] data = {"0,0", "1,0", "2,0", "3,0", "4,0", "4,-1", "4,-2", "4,-3", "4,-4"};
+                publish.write("GBRE", data, 10);
+
+                //publish.tearDown();
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+        }).start();
+
     }
 }
