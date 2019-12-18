@@ -1,17 +1,26 @@
-import actions.Move;
-
 import actuators.Servo;
-import connectivity.GobalVariable;
+import agent.Brain;
+import connectivity.DDSBase;
+import connectivity.GlobalVariable;
+import connectivity.Publish;
 import connectivity.Subscribe;
 import constants.ActuatorConstants;
+import constants.SensorConstants;
 import enums.Pole;
-import environment.Point;
+import environments.Point;
+import jason.JasonException;
+import jason.infra.centralised.RunCentralisedMAS;
 import sensors.Odometry;
-import java.io.IOException;
+import sensors.UltrasonicSensor;
+
+import java.io.*;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.pi4j.wiringpi.Gpio.delay;
 
-public class Main {
+public class Main implements Observer {
 
     private static Odometry odometry = Odometry.getInstance();
     private static final double RIGHT_TURN_DISTANCE = 911;
@@ -20,165 +29,108 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        DDSBase.getInstance().setup(args, 10);
 
-//        Webcam webcam = Webcam.getDefault();
-//        if (webcam != null) {
-//            System.out.println("Webcam: " + webcam.getName());
-//            webcam.setViewSize(new Dimension(320,240));
-//            webcam.open();
-//            try {
-//                System.out.println(webcam.getViewSize().height);
-//                ImageIO.write(webcam.getImage(), "PNG", new File("hello-world.png"));
-//            }
-//            catch (IOException e){
-//                e.printStackTrace();
-//            }
-//
-//        } else {
-//            System.out.println("No webcam detected");
-//        }
-        GobalVariable.args = args;
+        UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(SensorConstants.ULTRASONIC_ECHO_PIN,
+                SensorConstants.ULTRASONIC_TRIGGER_PIN, SensorConstants.REJECTION_START,
+                SensorConstants.REJECTION_TIME);
 
+        GlobalVariable.args = args;
         Servo wheel = new Servo(ActuatorConstants.STEER_SERVO_CHANNEL);
         wheel.writeAngle(100);
         delay(100);
         Pole pole = Pole.EAST;
 
-
-        Subscribe subscriber = new Subscribe();
+        Main m = new Main();
 
         new Thread(() -> {
-            try{
+            Publish publish = new Publish.Builder().setDataType("Telemetry")
+                    .setDomainID(10)
+                    .setTopicString("Sensor Data")
+                    .build();
+            publish.setUp();
+            System.out.println("Publisher started");
+
+                while (true) {
+
+                    try {
+                        GlobalVariable.ultraSonicData = ultrasonicSensor.getDistance();
+                        String[] data = {GlobalVariable.currentPosition, String.valueOf(GlobalVariable.ultraSonicData),
+                                String.valueOf(Odometry.getInstance().getTotalDistanceMoved()), GlobalVariable.currentAction};
+                        publish.write("agent1", data, 10);
+
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+        }).start();
+
+        Subscribe subscriber = new Subscribe();
+        subscriber.addObserver(m);
+
+        new Thread(() -> {
+            try {
                 subscriber.start(args);
                 System.out.println("Subscriber is started");
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }).start();
 
+    }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("===============UPDATE=====================");
+        new Thread(() -> {
+            try {
 
-        while (true){
-            if (!subscriber.isNewDataReceived()){
-                //System.out.print(".");
-            } else {
-                Point[] points = new Point[subscriber.getPoints().size()];
-                for (int i = 0; i < points.length; i++){
-                    points[i] = subscriber.getPoints().get(i);
-                }
+                List<Point> p = (List<Point>) arg;
+                Subscribe sub = (Subscribe) o;
 
-
-                if(points[1].getY() != points[0].getY()){
-                    if(points[1].getY() == (points[0].getY() -1)){
-                        pole=Pole.SOUTH;
-                    }
-                    else{
-                        pole=Pole.NORTH;
-                    }
-                }
-                else if(points[1].getX() != points[0].getX()){
-                    if(points[1].getX() == (points[0].getX() -1)){
-                        pole=Pole.WEST;
-                    }
-                    else{
-                        pole=Pole.EAST;
-                    }
-                }
-
-
+                Point[] points = new Point[p.size()];
                 for (int i = 0; i < points.length; i++) {
-                    if ((i + 1) != points.length){
-                        System.out.println(pole.name());
-                        switch (pole){
-                            case EAST:
-                                if (points[i + 1].getY() == (points[i].getY() + 1) && points[i + 1].getX() == points[i].getX() ) {
-                                    performMoveAction(LEFT_TURN_DISTANCE, -30);
-                                    Move.steer(0);
-                                    pole = Pole.NORTH;
-                                } else if (points[i + 1].getY() == (points[i].getY() - 1) && points[i + 1].getX() == points[i].getX()) {
-                                    performMoveAction(RIGHT_TURN_DISTANCE, 30);
-                                    Move.steer(0);
-                                    pole = Pole.SOUTH;
-                                } else if (points[i + 1].getX() == (points[i].getX() + 1)&& points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(SINGLE_CELL_SPACE, 0);
-                                }
-                                break;
-                            case SOUTH:
-                                if (points[i + 1].getY() == (points[i].getY() - 1) && points[i + 1].getX() == points[i].getX()) {
-                                    performMoveAction(SINGLE_CELL_SPACE, 0);
-                                } else if (points[i + 1].getX() == (points[i].getX() + 1)&& points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(LEFT_TURN_DISTANCE, -30);
-                                    Move.steer(0);
-                                    pole = Pole.EAST;
-                                } else if (points[i + 1].getX() == (points[i].getX() - 1)&& points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(RIGHT_TURN_DISTANCE, 30);
-                                    Move.steer(0);
-                                    pole = Pole.WEST;
-                                }
-                                break;
-                            case WEST:
-                                if (points[i + 1].getY() == (points[i].getY() - 1) && points[i + 1].getX() == points[i].getX()) {
-                                    performMoveAction(LEFT_TURN_DISTANCE, -30);
-                                    Move.steer(0);
-                                    pole = Pole.SOUTH;
-                                } else if (points[i + 1].getX() == (points[i].getX() - 1)&& points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(SINGLE_CELL_SPACE, 0);
-                                } else if (points[i + 1].getY() == (points[i].getY() + 1) && points[i + 1].getX() == points[i].getX()) {
-                                    performMoveAction(RIGHT_TURN_DISTANCE, 30);
-                                    Move.steer(0);
-                                    pole = Pole.NORTH;
-                                }
-                                break;
-                            case NORTH:
-                                if (points[i + 1].getY() == (points[i].getY() + 1) && points[i + 1].getX() == points[i].getX()) {
-                                    performMoveAction(SINGLE_CELL_SPACE, 0);
-                                } else if (points[i + 1].getX() == (points[i].getX() - 1)&& points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(LEFT_TURN_DISTANCE, -30);
-                                    Move.steer(0);
-                                    pole = Pole.WEST;
-                                } else if (points[i + 1].getX() == (points[i].getX() + 1) && points[i + 1].getY() == points[i].getY()) {
-                                    performMoveAction(RIGHT_TURN_DISTANCE, 30);
-                                    Move.steer(0);
-                                    pole = Pole.EAST;
-                                }
-                                break;
-
-                        }
-                    }
-
+                    points[i] = p.get(i);
                 }
+                File file = new File("objectState.txt");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(points);
+                objectOutputStream.flush();
+                objectOutputStream.close();
+                fileOutputStream.close();
 
-                System.out.println("Goal Reached");
-                subscriber.setNewDataReceived(false);
+                Thread thread=new Thread(new Brain());
+                thread.run();
+
+                System.out.println("Stop Reasoning inside main class");
+
+                if (GlobalVariable.hasCurrentHeading){
+                    new Thread(() -> {
+                        Publish publish = new Publish.Builder().setDataType("MissionPlan")
+                                .setDomainID(10)
+                                .setTopicString("Mission Plan")
+                                .build();
+                        publish.setUp();
+
+                        String[] data = {GlobalVariable.currentPosition, points[points.length-1].toString()};
+                        publish.write("agent", data, 99);
+
+                    }).start();
+                }
+                sub.setNewDataReceived(false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        }
-
+        }).start();
     }
-
-
-    private static void performMoveAction(double distance, int angle) {
-        Move.steer(angle);
-        odometry.reset();
-        if (!Move.getIsMoving()){
-            Move.forward(30);
-        }
-
-        while (true) {
-            if (odometry.getDistanceMoved() >= distance) {
-                System.out.println("Action Complete");
-                System.out.println(odometry.getPulseA());
-                odometry.reset();
-
-                break;
-            }
-        }
-
-        Move.stopEngine();
-    }
-
-
 }

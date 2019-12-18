@@ -1,0 +1,12 @@
+MAS bdiRobot {
+
+	infrastructure: Centralised
+
+	environment: environments.RobotEnvironment
+
+	agents:
+		agent1 ;
+
+	aslSourcePath:
+		"asl";
+}

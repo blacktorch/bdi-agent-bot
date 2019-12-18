@@ -54,14 +54,18 @@ public class UltrasonicSensor {
         while(gpioPinEcho.isLow()){ //wait until echo get high
             busyWaitNanos(1); //wait 1ns
             rejection_start++;
-            if(rejection_start== rejectionStart) return -1; //something wrong
+            if(rejection_start == rejectionStart){
+                return -1; //something wrong
+            }
         }
         startTime=System.nanoTime();
 
         while(gpioPinEcho.isHigh()){ //wait until echo get low
             busyWaitNanos(1); //wait 1ns
             rejection_time++;
-            if(rejection_time== rejectionTime) return -1; //infinity
+            if(rejection_time == rejectionTime){
+                return -1; //infinity
+            }
         }
         endTime=System.nanoTime();
 

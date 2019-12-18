@@ -1,11 +1,6 @@
-package environment;
+package environments;
 
 import com.github.sarxos.webcam.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class DetectMotion  implements WebcamMotionListener {
 

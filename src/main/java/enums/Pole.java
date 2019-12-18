@@ -5,4 +5,5 @@ public enum Pole {
     EAST,
     SOUTH,
     WEST,
+    CENTER,
 }

@@ -1,4 +1,4 @@
-package environment;
+package environments;
 
 import java.util.ArrayList;
 import java.util.List;

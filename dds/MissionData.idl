@@ -9,17 +9,18 @@ module MissionData {
     string from;
     long planId;
     PlanData plan_data;
+    PlanData obstacles;
   };
 
-  #pragma DCPS_DATA_TYPE "MissionData::AgentAction"
-  #pragma DCPS_DATA_KEY "MissionData::AgentAction actionId"
+  #pragma DCPS_DATA_TYPE "MissionData::NormalizedPoints"
+  #pragma DCPS_DATA_KEY "MissionData::NormalizedPoints pointsId"
 
-  typedef sequence<string> ActionData;
+  typedef sequence<string> Points;
 
-  struct AgentAction {
+  struct NormalizedPoints {
     string from;
-    long actionId;
-    ActionData action_data;
+    long pointsId;
+    Points points_data;
   };
 
   #pragma DCPS_DATA_TYPE "MissionData::Telemetry"

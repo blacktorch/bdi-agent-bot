@@ -1,10 +1,10 @@
 package connectivity;
 
 import DDS.*;
-import MissionData.AgentAction;
-import MissionData.AgentActionDataReader;
-import MissionData.AgentActionDataReaderHelper;
-import MissionData.AgentActionHolder;
+import MissionData.NormalizedPoints;
+import MissionData.NormalizedPointsDataReader;
+import MissionData.NormalizedPointsDataReaderHelper;
+import MissionData.NormalizedPointsHolder;
 import interfaces.ISubscribedDataReceivedListener;
 
 public class DataReaderListenerImpl extends _DataReaderListenerLocalBase {
@@ -15,30 +15,34 @@ public class DataReaderListenerImpl extends _DataReaderListenerLocalBase {
         this.listener = listener;
     }
 
+    public void setListener(ISubscribedDataReceivedListener listener){
+        this.listener = listener;
+    }
+
     public synchronized void on_data_available(DataReader reader) {
         System.out.println("Inside the on_data_available method");
 
         //Here Message is the name of struct defined in .idl file
-        AgentActionDataReader agentActionDataReader = AgentActionDataReaderHelper.narrow(reader);//MissionParameterDataReaderHelper.narrow(reader);
+        NormalizedPointsDataReader agentActionDataReader = NormalizedPointsDataReaderHelper.narrow(reader);//MissionParameterDataReaderHelper.narrow(reader);
         if (agentActionDataReader == null) {
             System.err.println("ERROR: read: narrow failed.");
             return;
         }
 
-        AgentAction agentAction = new AgentAction();
-        agentAction.action_data = new String[0];
+        NormalizedPoints normalizedPoints = new NormalizedPoints();
+        normalizedPoints.points_data = new String[0];
 
-        AgentActionHolder agentActionHolder = new AgentActionHolder(agentAction);
+        NormalizedPointsHolder normalizedPointsHolder = new NormalizedPointsHolder(normalizedPoints);
         SampleInfoHolder sih = new SampleInfoHolder(new SampleInfo(0, 0, 0,
                 new Time_t(), 0, 0, 0, 0, 0, 0, 0, false, 0));
-        int status = agentActionDataReader.take_next_sample(agentActionHolder, sih);
+        int status = agentActionDataReader.take_next_sample(normalizedPointsHolder, sih);
 
         if (status == RETCODE_OK.value) {
 
             if (sih.value.valid_data) {
             System.out.println("Setting the data");
 
-                listener.onSubscribedDataReceived(agentActionHolder.value.action_data);
+                listener.onSubscribedDataReceived(normalizedPointsHolder.value.points_data);
 
             }
             else if (sih.value.instance_state ==

@@ -13,6 +13,7 @@ public class Odometry   {
     private static double DIST_PER_PULSE = 0.11989583;
 
     private double distanceMoved;
+    private static double totalDistanceMoved;
 
     private GpioPin leftInputA;
     private GpioPin rightInputB;
@@ -28,6 +29,7 @@ public class Odometry   {
         gpio =  GpioFactory.getInstance();
 
         this.distanceMoved = 0.0f;
+        totalDistanceMoved = 0.0f;
         pulseA = 0;
         pulseB = 0;
 
@@ -55,6 +57,7 @@ public class Odometry   {
                 public void callback(int i) {
                     ++pulseA;
                     distanceMoved = (((double)pulseA + (double)pulseB)/2) * (230.2/1000);
+                    totalDistanceMoved += distanceMoved;
                     //System.out.println(pulseA);
                 }
             });
@@ -96,6 +99,10 @@ public class Odometry   {
 
     public synchronized int getPulseA(){
         return pulseA;
+    }
+
+    public double getTotalDistanceMoved(){
+        return totalDistanceMoved;
     }
 
 }
